@@ -1,0 +1,65 @@
+import numpy as np
+import SimpleITK as sitk
+import matplotlib.pyplot as plt
+
+
+import numpy as np
+
+
+def norm(img_slice):
+    # Assuming 'img_slice' is your 2D image slice
+    img_min = np.min(img_slice)
+    img_max = np.max(img_slice)
+    
+    # Normalize the image
+    img_normalized = (img_slice - img_min) / (img_max - img_min)
+    
+    return img_normalized
+
+# Now, img_normalized is between 0 and 1
+
+# Read the base image and ground truth image
+image = sitk.ReadImage(r"C:\My_Data\M2M Data\data\data_2\train\001\001_LA_ED.nii.gz")
+image_array = sitk.GetArrayFromImage(image)
+image_array = image_array[0,:]
+image_array = norm(image_array)
+image_array = np.stack((image_array,)*3, axis=2)
+plt.figure()
+plt.imshow(image_array,cmap='gray')
+
+gt = sitk.ReadImage(r"C:\My_Data\M2M Data\data\data_2\train\001\001_LA_ED_gt.nii.gz")
+gt_array = sitk.GetArrayFromImage(gt)
+gt_array = gt_array[0,:]
+
+plt.figure()
+plt.imshow(gt_array)
+
+image_array[np.where(gt_array==1)] = [0.8,0.7,0]
+image_array[np.where(gt_array==2)] = [0.9,0,0]
+image_array[np.where(gt_array==0)] = [0.9,0,0]
+
+
+plt.figure()
+plt.imshow(image_array)
+
+t_gt = np.zeros(gt_array.shape)
+t_gt[np.where(gt_array==3)] = 1
+plt.figure()
+plt.imshow(t_gt,cmap='gray')
+
+t_gt = np.zeros(gt_array.shape)
+t_gt[np.where(gt_array==1)] = 1
+plt.figure()
+plt.imshow(t_gt,cmap='gray')
+
+
+
+t_gt = np.zeros(gt_array.shape)
+t_gt[np.where(gt_array==2)] = 1
+plt.figure()
+plt.imshow(t_gt,cmap='gray')
+
+t_gt = np.zeros(gt_array.shape)
+t_gt[np.where(gt_array==0)] = 1
+plt.figure()
+plt.imshow(t_gt,cmap='gray')
