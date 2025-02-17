@@ -1,0 +1,221 @@
+\chapter{Introduction}
+\label{ch:intro}
+\section{The Human Heart: Structure and Function}
+The human heart, also called `cardiac' from the Greek language \textit{`kardia'}, is a fist-sized organ that not only represents love but also pumps blood throughout the body. It delivers oxygen and nutrients while removing waste products from the blood, as shown in \figref{fig1_1}. It is a muscular, hollow organ divided into four chambers. Below, we explain a sequential explanation of how the heart functions, starting from the process and following its natural flow.
+
+\begin{figure}[b!]
+\centering
+\includegraphics[scale=0.20]{Figs_Ch1/heart.png}
+\caption{Illustration of the human heart anatomy and blood flow, highlighting the atrium and other key chambers. Adapted from Wikimedia Commons, licensed under CC BY-SA 3.0..}
+\label{fig1_1}
+\end{figure}
+
+\newpage
+\noindent\textbf{1. Blood Flow into the Heart: Right Atrium (RA)}\\
+The process begins when deoxygenated blood from the body returns to the heart through two large veins: the superior vena cava (carrying blood from the upper body) and the inferior vena cava (carrying blood from the lower body). This blood enters the right atrium (RA) of the heart. The RA receives the oxygen-poor blood and prepares it for its journey to the lungs for oxygenation.
+
+\noindent\textbf{2. Blood Flow to the Right Ventricle (RV)}\\
+When the right atrium contracts, it pushes the deoxygenated blood through the tricuspid valve into the right ventricle (RV), the heart's lower chamber on the right side. The RV has a thinner muscular wall as it only needs to pump blood to the nearby lungs at a lower pressure.
+
+\noindent\textbf{3. Pulmonary Circulation: Right Ventricle to the Lungs}\\
+Once the blood fills the RV, it contracts, sending the blood through the pulmonary valve into the pulmonary artery. The blood then travels to the lungs, where it becomes oxygenated. This is known as pulmonary circulation.
+
+\noindent\textbf{4. Oxygenated Blood Returns to the Heart: Left Atrium (LA)}\\
+After oxygenation in the lungs, oxygen-rich blood returns to the heart through the pulmonary veins to the left atrium (LA). The LA fills with oxygenated blood and prepares to send it to the left ventricle.
+
+\noindent\textbf{5. Blood Flow to the Left Ventricle (LV)}\\
+As the LA contracts, it forces the oxygenated blood through the mitral valve into the left ventricle (LV), the heart's strongest chamber. The LV has a thicker muscular wall than the RV because it needs to generate higher pressure to pump blood throughout the body.
+
+\noindent\textbf{6. Systemic Circulation: Left Ventricle to the Body}\\
+The left ventricle (LV) contracts, ejecting oxygen-rich blood through the aortic valve into the aorta, the body's largest artery. The aorta distributes blood to organs and tissues, delivering oxygen and nutrients for cellular functions and completing systemic circulation.
+
+\noindent\textbf{7. Heart's Electrical System: Synchronization of the Chambers}\\
+The heart's electrical system coordinates the entire blood flow process.
+The sinoatrial (SA) node in the right atrium generates electrical impulses, triggering atrial contraction to push blood into the ventricles. Signals then pass through the atrioventricular (AV) node, which delays briefly to ensure ventricular filling before reaching the ventricles to stimulate their contraction, pumping blood to the lungs and body.
+\section{Cardiac Image Segmentation}
+In computer vision, image segmentation involves assigning pixel-level labels to images \cite{pal1993review}. It is crucial in many fields, including self-driving cars \cite{sellat2022semantic}, precision agriculture \cite{khan2020ced}, remote sensing \cite{yuan2021review}, industrial automation \cite{dirr2024cut}, and medical imaging \cite{azad2024medical}, which are no exception. In cardiac image segmentation, a voxel-level label is assigned to each region of the heart \cite{chen2020deep}, such as the left atrium (LA), right atrium (RA), left ventricle (LV), right ventricle (RV), and myocardium (MYO) or to diseases tissues such as atrial scars.
+
+An intensity image acquired from a medical scanner is shown in \figref{fig1_2} (left side). This intensity image captures the anatomical structures of the heart, including the chambers and surrounding tissues. However, the absence of explicit boundaries between regions makes it challenging to distinguish specific areas of interest.
+
+\begin{figure}[b!]
+\centering
+\includegraphics[scale=0.60]{Figs_Ch1/seg-intro1.png}
+\caption{ Cardiac image segmentation. (Left) Intensity image. (Right) Segmentation mask with labeled ROIs: LV (1), MYO (2), RV (3), and background (0).}
+\label{fig1_2}
+\end{figure}
+
+\figref{fig1_2} (right side) presents an indexed segmentation mask, where each region of interest (ROI) is assigned a unique numerical identifier—such as 1 for the LV, 2 for the MYO, and 3 for, and 0 for the background (BG). This segmentation mask, often called the ground truth (GT) or label, serves as the target output for cardiac image segmentation networks. The segmentation network's primary objective is to reconstruct this segmentation mask from the input intensity image accurately.
+
+%To comprehensively evaluate segmentation accuracy, \figref{fig1_1} (c) overlays the segmentation mask onto the original intensity image. This combined visualization integrates anatomical details with the segmented regions, enabling a direct comparison between the predicted boundaries and the actual structures of the heart.
+
+
+\figref{fig1_3} provides a step-by-step illustration of the deep learning-based medical image segmentation process. It follows a logical sequence from input to output, demonstrating how segmentation networks extract anatomical structures from medical images.
+
+The process begins with an intensity-based medical image, such as a cardiac scan. This grayscale image contains anatomical structures, but the boundaries between different regions are not explicitly defined, making it difficult to distinguish specific areas.
+
+Next, the input image is passed through a segmentation network, which processes it and generates a set of binary masks, each corresponding to a different anatomical structure. The number of output masks (also known as output channels) depends on the number of segmentation classes in the dataset. In this case, we have three segmentation classes (LV, MYO, and RV) and a BG class, resulting in four output channels.
+\begin{figure}[t!]
+\centering
+\includegraphics[scale=0.46]{Figs_Ch1/seg-intro2.png}
+\caption{Cardiac image segmentation pipeline.}
+\label{fig1_3}
+\end{figure}
+In the final step, the segmentation mask is superimposed on the original intensity image to create a composite visualization. Different colors are assigned to the segmented regions (yellow for LV, red for MYO, and blue for RV) to facilitate interpretation. This overlay allows for an intuitive comparison between the predicted segmentation and the anatomical structures in the original image, aiding in the validation of segmentation accuracy.
+
+
+\figref{fig1_4} illustrates the main applications and modalities of cardiac image segmentation.
+Cardiac images are captured using different modalities, such as Magnetic Resonance Imaging (MRI), Computed Tomography (CT), Ultrasound (Echocardiography), and X-ray Angiogram. Each has advantages and limitations. For example, MRI   offers superior soft tissue contrast 3D visualization, is non-invasive, and does not involve ionizing radiation. However, it is expensive, time-consuming, and requires patient cooperation, as movement during the scan significantly impacts MRI quality. CT provides high-resolution imaging of cardiac structures and is a good choice for visualizing coronary arteries. However, it involves ionizing radiation and contrast agent utilization, which may pose risks for patients with kidney problems. Similarly, Ultrasound is cost-effective and portable. However, it can suffer from poor image quality. 
+\begin{figure}[t!]
+\centering
+\includegraphics[scale=0.25]{Figs_Ch1/seg-intro.jpg}
+\caption{Overview of cardiac image segmentation tasks for different imaging modalities \cite{chen2020deep}. The human heart's anatomy (image source: Wikimedia Commons, license: CC BY-SA 3.0) is on the left.}
+\label{fig1_4}
+\end{figure}
+Cardiac image segmentation across these different imaging modalities is critical for enhancing diagnostic accuracy, treatment planning, and monitoring of cardiac conditions. 
+
+\subsection{Clinical Background}
+Cardiovascular diseases (CVDs) are the leading cause of death, with a yearly toll of 23.6 million lives due to heart disease and stroke globally \cite{greenfield2019cardiovascular}. This underscores the need to identify and treat cardiac disorders. 
+Early detection and accurate diagnosis of CVDs are critical for timely intervention and improved patient outcomes \cite{WHO_stats}.  Cardiologists have focused on early diagnosis as part of the clinical workflow. Segmentation is considered an essential first step in quantifying cardiac anatomy, assessing functional parameters, and identifying pathological regions for accurate diagnosis and treatment planning. \cite{villegas2024beating}
+
+\begin{figure}[b!]
+\centering
+\includegraphics[scale=0.35]{Figs_Ch1/clinical_main.png}
+\caption{The role of segmentation algorithms in transforming cardiac imaging data into detailed anatomical and functional insights, facilitating accurate parameter extraction for advanced cardiac analysis \cite{villegas2024beating}.}
+\label{fig1_5}
+\end{figure}
+
+CVDs include a range of disorders affecting the heart and blood vessels, including coronary artery disease \cite{malakar2019review}, heart failure, valvular heart disease \cite{hupp2015cardiovascular}, cardiomyopathies \cite{celermajer2012cardiovascular}, and congenital heart defects \cite{jenkins2007noninherited}. Automated cardiac image segmentation enhances clinical workflow efficiency, standardizes measurements, and reduces diagnosis and treatment planning variability. Here are some key areas where cardiac image segmentation plays a vital role:
+
+\noindent\textbf{Ventricular Function Assessment}\\
+Accurate segmentation of the left ventricle (LV) and right ventricle (RV) is essential for calculating ejection fraction (EF) \cite{liu2021deep},\cite{tokodi2023deep}, measuring ventricular volumes (end-diastolic and end-systolic), and assessing wall motion and thickness \cite{li2022deep}, as shown in \figref{fig1_5}.These measurements are critical for diagnosing and monitoring heart failure, cardiomyopathies, and valvular heart disease.  \cite{rana2019tricuspid}\\
+\noindent \textbf{Coronary Artery Analysis}\\
+Segmentation of coronary arteries in CT angiography facilitates detecting and quantifying coronary artery stenosis, assessing plaque composition, and planning revascularization procedures \cite{kaba2023application}. Coronary artery segmentation plays a vital role in monitoring disease progression, evaluating the effectiveness of treatments, and predicting long-term outcomes for patients with coronary artery disease \cite{mahendiran2025angiopy}, shown in \figref{fig1_6}\\
+
+\begin{figure}[t!]
+\centering
+\includegraphics[scale=0.35]{Figs_Ch1/clinical_ef.png}
+\caption{Assessing RV Function Using Echocardiographic Parameters \cite{mahendiran2025angiopy}: How segmentation can enhance quantification.}
+\label{fig1_6}
+\end{figure}
+
+\begin{figure}[t!]
+\centering
+\includegraphics[scale=0.70]{Figs_Ch1/clinical_art.png}
+\caption{(a) Coronary artery segmentation from left to right the ground truth (red), the predicted region of the arteries (blue), and an overlap of the two (green) \cite{pan2021coronary}. (b) QCA Report with Corresponding Diameters: The table highlights maximum (Proximal) and minimum (Distal) diameters from the segmentation mask \cite{iyer2021angionet}.}
+\label{fig1_7}
+\end{figure}
+
+\noindent \textbf{Cardiac Valve Analysis}\\
+The segmentation of heart valves in cardiac imaging allows for assessing the valvular morphology, leaflet motion, and valve area \cite{balu2019deep}. It aids in diagnosing valvular diseases such as aortic stenosis, mitral regurgitation, and tricuspid valve disorders \cite{long2024deep}. Detailed anatomical analysis facilitates the planning of valve repair or replacement surgeries, allowing for a more tailored approach to valve disease management \cite{nedadur2022artificial}.\\
+
+
+\begin{figure}[t!]
+\centering
+\includegraphics[scale=0.80]{Figs_Ch1/clinical_aortajpg.jpg}
+\caption{Aorta segmentation is used as the first step to analyze hemodynamic metrics like velocity, energy loss, and wall shear stress to observe flow abnormalities in the patient \cite{garcia2019role}.}
+\label{fig1_8}
+\end{figure}
+
+\noindent \textbf{Congenital Heart Disease Evaluation}\\
+For congenital heart disease (CHD), precisely segmenting cardiac structures like atria, ventricles, and great vessels is essential \cite{yao2023graph}. It enables accurate assessments of congenital anomalies, such as septal defects, patent ductus arteriosus, and transposition of the great arteries \cite{sharobeem2022validation}. Cardiac segmentation is integral to pre-surgical planning, post-operative follow-up, and monitoring disease progression in pediatric and adult CHD patients \cite{sun2019personalized}.\\
+
+\begin{figure}[t!]
+\centering
+\includegraphics[scale=0.35]{Figs_Ch1/clinical_hcd.png}
+\caption{Example whole-heart segmentations in the cardiovascular magnetic resonance scans from patients with congenital heart disease (CHD). For definitions of each CHD subtype, see Table 1 in \cite{pace2024hvsmr}}
+\label{fig1_9}
+\end{figure}
+
+
+\noindent \textbf{Scar Segmentation (Myocardial and Atrial Scars)}\\
+Segmentation of myocardial and atrial scars is essential for assessing the extent of fibrotic tissue from myocardial infarctions \cite{karamitsos2020myocardial} or atrial arrhythmias \cite{li2022medical}. In myocardial scars, identified through late gadolinium-enhanced MRI, segmentation aids in arrhythmia risk stratification, guiding defibrillator implantation, and revascularization \cite{zaidi2023machine}. For atrial scars, common in atrial fibrillation, it helps evaluate atrial remodeling and informs ablation or drug therapy \cite{badger2010evaluation}. Myocardial and atrial scar detection are key in managing arrhythmogenic cardiomyopathies and improving treatment outcomes.\\
+
+\begin{figure}[t!]
+\centering
+\includegraphics[scale=0.35]{Figs_Ch1/clinical_scars.png}
+\caption{Quantifying scar and scar border zones in cardiac MRI helps assess the extent and severity of myocardial injury, demonstrating how segmentation can enhance the detection and accurate quantification of these regions \cite{sonoda2017scar}.}
+\label{fig1_10}
+\end{figure}
+
+%In a clinical context, cardiac image segmentation separates structures within a cardiac image, such as the heart chambers, ventricles, and MYO, from surrounding tissues. This separation allows clinicians to measure each cardiac structure's volume, wall thickness, and function.
+
+
+%Automated cardiac image segmentation enhances clinical workflow efficiency, standardizes measurements, and reduces diagnosis and treatment planning variability. Precise quantification of key cardiac parameters, such as ventricular volumes, myocardial wall thickness, and ejection fraction, is essential for evaluating cardiac function and detecting abnormalities. Accurate measurement of these parameters aids in diagnosing conditions like heart failure and cardiomyopathies and helps track changes over time in response to medical interventions. Cardiac imaging supports image-guided procedures, including catheter-based interventions and surgical planning, by providing real-time anatomical insights that enhance procedural accuracy and safety. Furthermore, automated segmentation methods play a critical role in the longitudinal monitoring of disease progression, allowing clinicians to assess treatment efficacy and make informed adjustments to therapeutic strategies.
+
+%Cardiac imaging is pivotal in evaluating cardiac anatomy, function, and pathology, among other diagnostic tools. This underscores the need to identify and treat cardiac disorders.
+
+
+%Traditional image processing techniques have been explored for segmentation tasks; however, they struggle with generalizability due to variations in image contrast, patient-specific anatomical differences, and the presence of artifacts. Deep learning-based approaches have emerged as powerful tools for automated cardiac segmentation, leveraging large datasets, CNNs, and Transformers to learn complex spatial relationships within medical images. These methods provide accurate and reproducible segmentation, facilitating more reliable clinical decision-making.
+
+
+\subsection{Research Background}
+\section{Challenges}
+Several challenges hinder the development of robust and generalizable segmentation models. These challenges arise from anatomical variability, differences in image acquisition, limited annotated data, and computational constraints. In this section, we outline key challenges in cardiac image segmentation and then discuss how this thesis addresses them.\\
+\noindent\textbf{Anatomical and Structural Complexity}\\
+The shape of anatomical structures, such as the left atrium (LA), varies between patients due to natural differences in size and morphology. Additionally, diseased hearts often exhibit structural changes that distinguish them from healthy ones. For example, atrial enlargement or fibrosis conditions can alter the LA’s shape, making segmentation more challenging.\\
+\textbf{Addressed in}
+\begin{itemize}
+    \item Chapter \ref{ch: Sequential Segmentation of the Left Atrium and Atrial Scars} proposes a Multi-scale weight-sharing network for left atrium cavity segmentation to enhance feature representation. The network can learn shapes, and the proposed weight-sharing strategy across multiple scales will help it learn the features of different scales.
+    \item Chapter \ref{ch: Crop and Couple: Cardiac image segmentation using interlinked specialist networks} introduces specialist networks focusing on specific cardiac structures, improving segmentation performance for complex anatomical regions.
+\end{itemize} 
+\noindent\textbf{Foreground-Background Imbalance}\\
+In some cardiac image segmentation tasks, specific structures, such as scars, are tiny and occupy only a tiny portion of the entire image. This creates a significant foreground-to-background imbalance, where the background dominates the image. Such a significant ratio difference makes it challenging for segmentation models to detect and segment small structures accurately, as they can be easily overlooked or misclassified.\\
+\textbf{Addressed in}
+\begin{itemize}
+    \item Chapter \ref{ch: Sequential Segmentation of the Left Atrium and Atrial Scars} introduces the Boundary2Patches method. In this approach, we first segment the LA and then focus on identifying atrial scars specifically along its boundary rather than searching the entire image. Since the scars are typically located only along the boundary of the LA, we limit the search area to this region. This focused approach enhances the confidence of scar detection and reduces the likelihood of false positives outside the LA boundary.
+\end{itemize}
+
+\noindent\textbf{Overlooked metadata and multi-views in cardiac Segmentation}\\
+Most cardiac image segmentation methods rely on a single image to generate the segmentation map, often overlooking the additional data accompanying the images, such as metadata related to image acquisition, underlying heart conditions, and physiological factors. This limitation restricts the ability to leverage the available information for more accurate segmentation fully. Moreover, most segmentation models typically operate in isolation on individual views, failing to exploit the relationships between different cardiac views. For instance, the short-axis view can be transformed into the long-axis view, providing prior information that can assist in the segmentation of the LA view.\\
+\textbf{Addressed in}
+
+\begin{itemize}
+    \item Chapter \ref{ch: Compositional Cardiac Images Segmentation Leveraging Metadata} introduces a Cross-Modal Feature Integration (CMFI) module to utilize the image metadata, including acquisition parameters, medical condition, and demographic of the patient, to modulate the segmentation network conditionally. The CMFI module guides the segmentation network with patterns associated with intensity images to improve performance.
+    \item Chapter \ref{ch: Multi-view Cardiac Image Segmentation via Trans-Dimensional Priors} proposes a sequential 3D-to-2D-to-3D approach for multi-view cardiac image segmentation by effectively utilizing the trans-dimensional segmentation priors (TDSP), which transform a segmentation from one view into another and serve as guidance.
+\end{itemize}
+\noindent\textbf{Coarse-to-fine Segmentation}\\
+Although existing cardiac image segmentation methods employ coarse-to-fine approaches, they are typically two-stage processes, where the second stage may incur computational complexity similar to the first.\\
+\textbf{Addressed in}
+
+\begin{itemize}
+    \item Chapter \ref{ch: Compositional Cardiac Images Segmentation Leveraging Metadata} introduces a compositional segmentation method where a single network can perform both heart localization and segmentation simultaneously.
+    \item Chapters \ref{ch: Crop and Couple: Cardiac image segmentation using interlinked specialist networks} and \ref{ch: Multi-view Cardiac Image Segmentation via Trans-Dimensional Priors} leverage the Heart Localization and Cropping (HLC) module to crop the heart region from surrounding tissues. The HLC module utilizes the background prediction from the first stage and reduces computational complexity for the second-stage networks. This cropping technique also leads to more precise segmentation results than the first stage.
+\end{itemize}
+
+\noindent\textbf{Limitations of Traditional CNNs in Cardiac Segmentation}\\
+Traditional CNN methods for cardiac image segmentation struggle with capturing long-range dependencies and fine-grained spatial context, particularly in complex medical images like cardiac MRIs. CNNs are often limited by their local receptive fields, making it hard for them to effectively model global structures and subtle variations across different heart regions, such as the myocardium, atria, and ventricles.\\
+\textbf{Addressed in}
+\begin{itemize}
+    \item Chapter \ref{ch: Crop and Couple: Cardiac image segmentation using interlinked specialist networks} introduces Efficient Additive Attention-based UNet (E-2AUNet), a hybrid self-attention and CNN segmentation network to capture long-range spatial dependencies and contextual information, improving the segmentation of intricate cardiac structures.
+    \item Chapter \ref{ch: CAMS: Convolution and Attention-Free Mamba-based Cardiac Image Segmentation} proposes a Convolution and Attention-Free Mamba-based Cardiac Image Segmentation Network CAMS-Net, by reducing reliance on convolutions and incorporating attention-free operations. The CAMS-Net solves the challenge of capturing long-range dependencies and fine-grained spatial context by moving away from traditional convolutional architectures and leveraging Mamba-based state-space models (SSMs).
+\end{itemize}
+\section{Contributions}
+The contributions of this thesis are summarised as follows:
+\begin{itemize}
+    \item In Chapter \ref{ch: Sequential Segmentation of the Left Atrium and Atrial Scars}, we introduce a Multi-scale Weight Sharing Network for left atrium cavity segmentation, leveraging weight sharing across different scales to enhance feature representation and a Boundary2Patches method for scar segmentation, focusing on smaller scars constrained around the LA cavity boundary to improve precision.
+    \item In chapter \ref{ch: Compositional Cardiac Images Segmentation Leveraging Metadata}, we propose a novel compositional segmentation approach that simultaneously localizes the heart (supersegmentation) and segments the heart structures (subsegmentation). We also propose a Cross-Modal Feature Integration (CMFI) module to utilize the image metadata, including acquisition parameters, medical condition, and demographic of the patient, to conditionally modulate the segmentation network.
+    \item In chapter \ref{ch: Crop and Couple: Cardiac image segmentation using interlinked specialist networks}, we propose CroCNet. This novel two-stage architecture computes a first segmentation to identify anatomies
+    and perform cropping on the original image. The cropped image is fed into a second stage consisting of coupled specialist networks that perform binary segmentation. For the first stage of CroCNet, we propose E-2AUNet, a novel hybrid encoder-decoder architecture that modifies a UNet with E-2A blocks. In the second stage, we implement specialist networks coupled through efficient additive cross-attention, which acts as a soft shape prior.
+    \item In chapter \ref{ch: Multi-view Cardiac Image Segmentation via Trans-Dimensional Priors}, we explore a sequential 3D-to-2D-to-3D approach for multi-view cardiac image segmentation by effectively utilizing the trans-dimensional segmentation priors (TDSP), which transform a segmentation from one view into another and serve as guidance. The TDSP provides a robust anatomical reference at the network’s input and encourages the network to produce anatomically plausible segmentation maps. We leverage the TDSP and introduce a Heart Localization and Cropping (HLC) module to focus the segmentation on the heart region only. This strategy reduces the computation for the second and third-stage segmentation network and eliminates false positive predictions.
+    \item In Chapter \ref{ch: CAMS: Convolution and Attention-Free Mamba-based Cardiac Image Segmentation}, we introduce a convolution and self-attention-free Mamba-based segmentation network, CAMS-Net. We propose a Linearly Interconnected Factorized Mamba (LIFM) block to reduce the trainable parameters of Mamba and improve its non-linearity. LIFM implements a weight-sharing strategy for different scanning directions, specifically for the two scanning direction strategies of vision Mamba, to reduce the computational complexity further whilst maintaining accuracy. We propose the Mamba Channel Aggregator (MCA) and Mamba Spatial Aggregator (MSA) and demonstrate how they can learn information along the channel and spatial dimensions of the features, respectively.
+    
+\end{itemize}
+
+\clearpage
+
+\section{Thesis structure}
+
+\begin{itemize}
+    \item Chapter \ref{ch:background} provides a comprehensive literature review on CNN-based segmentation methods, self-attention-based segmentation methods, single-stage vs. two-stage approaches, their respective advantages and limitations, and an overview of publicly available datasets used in this thesis.
+    \item Chapter \ref{ch: Sequential Segmentation of the Left Atrium and Atrial Scars} details our sequential segmentation method for the Left Atrium and Atrial Scars. A Multi-Scale Weight Sharing Network is employed to segment the LA, followed by the Boundary2Patches Method to identify scars along the LA boundary.
+    \item Chapter \ref{ch: Compositional Cardiac Images Segmentation Leveraging Metadata} proposes a compositional segmentation approach for cardiac image analysis, where heart localization and segmentation are performed simultaneously. Additionally, a novel metadata integration module, CMFI, is introduced to modulate image features conditionally based on metadata.
+    \item Chapter \ref{ch: Crop and Couple: Cardiac image segmentation using interlinked specialist networks} explores the Crop and Couple approach. This chapter introduces an Efficient Additive Attention-based UNet architecture, a cropping module that extracts the heart region from full-scale images, and Specialist Networks leveraging weight-sharing and cross-efficient additive attention to focus on specific anatomical structures.
+    \item Chapter \ref{ch: Multi-view Cardiac Image Segmentation via Trans-Dimensional Priors} presents the Multi-view Cardiac Image Segmentation approach, which incorporates trans-dimensional priors. This method transforms the segmentation output from one view (short-axis/long-axis) into another, using the transformed segmentation as prior knowledge to guide the other view segmentation network, ensuring anatomically consistent predictions.
+    \item Chapter \ref{ch: CAMS: Convolution and Attention-Free Mamba-based Cardiac Image Segmentation} introduces CAMS-Net, a Convolution and Attention-Free Mamba-based approach for cardiac image segmentation network. This chapter explores how state-space models, particularly Mamba, can replace traditional convolutions and self-attention mechanisms, offering an efficient and scalable alternative for medical image segmentation. 
+    \item Chapter \ref{ch:conclusions} summarizes the key contributions of this thesis, highlighting advancements in cardiac image segmentation. It also outlines potential directions for future research to enhance segmentation accuracy and applicability further.
+    
+    
+\end{itemize}
+
+
+\input{publications}
